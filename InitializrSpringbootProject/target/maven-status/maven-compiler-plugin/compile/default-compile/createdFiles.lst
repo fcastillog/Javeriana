@@ -1,0 +1,10 @@
+edu\javeriana\reto\application\ConfigRedirect.class
+edu\javeriana\reto\application\TipoIdentificacionController.class
+edu\javeriana\reto\RetoApplication.class
+edu\javeriana\reto\infrastructure\TipoIdentificacionRepository.class
+edu\javeriana\reto\config\OpenAPIConfig.class
+edu\javeriana\reto\application\PersonaController.class
+edu\javeriana\reto\dominio\Persona.class
+edu\javeriana\reto\infrastructure\PersonaRepository.class
+edu\javeriana\reto\application\exception\ResourceNotFoundException.class
+edu\javeriana\reto\dominio\TipoIdentificacion.class
