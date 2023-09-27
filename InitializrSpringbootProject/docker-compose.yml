@@ -1,0 +1,54 @@
+version: '20.10.23'
+name: entorno_base
+services:
+  dbposgrest:
+    build:
+      context: .
+      dockerfile: postgres.dockerfile
+    container_name: db_postgres_base
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=general
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+    volumes:
+      - datadb:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    networks:
+      db_network:
+        aliases:
+          - db_host
+  webbackend:
+    container_name: java_backend_base
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    networks:
+      db_network:
+        aliases:
+          - backend_host
+    depends_on:
+      - dbposgrest
+    environment:
+      - BD_URL=jdbc:postgresql://db_host:5432/general
+      - BD_PASSWORD=admin
+      - BD_USER=postgres
+      - HIBERNATE_LEVEL=debug
+      - LOG_LEVEL=debug
+    ports:
+      - 8080:8080
+volumes:
+  data: {}
+  deployments: {}
+  datadb:
+networks:
+  db_network:
+    name: db_net
+    driver: bridge
+    ipam:
+      driver: default
